@@ -49,5 +49,3 @@ def del_f() ->str:
 def receive_pat(request: PatientRequest):
 	app.counter += 1
 	return PatientResponse(id=app.counter, patient=request)
-
-
