@@ -1,5 +1,5 @@
-from fastapi import FastAPI
-
+from fastapi import FastAPI, HTTPException
+from typing import Dict
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -10,6 +10,9 @@ app.counter = -1
 class PatientRequest(BaseModel):
 	name: str
 	surename: str
+
+
+app.patients : Dict[int, PatientRequest] = {}
 
 
 class PatientResponse(BaseModel):
@@ -48,4 +51,12 @@ def del_f() ->str:
 @app.post('/patient', response_model=PatientResponse)
 def receive_pat(request: PatientRequest):
 	app.counter += 1
+	app.patients[app.counter] = request
 	return PatientResponse(id=app.counter, patient=request)
+
+@app.get('/patient/{pk}')
+def ret_patient(pk: int):
+	if(pk in app.patients):
+		return app.patients[pk]
+	else:
+		raise HTTPException(status_code=404, detail="Patient not found") 
