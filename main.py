@@ -59,4 +59,4 @@ def ret_patient(pk: int):
 	if(pk in app.patients):
 		return app.patients[pk]
 	else:
-		raise HTTPException(status_code=404, detail="Patient not found") 
+		raise HTTPException(status_code=204, detail="Patient not found") 
